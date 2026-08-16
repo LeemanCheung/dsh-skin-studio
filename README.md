@@ -4,6 +4,12 @@ English | [中文](README.zh-CN.md)
 
 A local-first DSH Skin Studio for creating, auditing, previewing, persisting, importing, and exporting semantic `--dsw-alias-*` light/dark themes.
 
+## Screenshot
+
+![Skin Studio token editor and preview](https://raw.githubusercontent.com/LeemanCheung/dsh-skin-studio/main/assets/screenshots/overview.png)
+
+> Generated with GPT Image from the implemented Client layout and feature set; runtime appearance follows the active DSH theme and viewport.
+
 ## Features
 
 - Settings → **Skin Studio** responsive library, semantic-token editor, and dual light/dark preview with six presets, locks, undo/redo, delete confirmation, and manual colour controls.

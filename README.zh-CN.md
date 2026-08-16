@@ -4,6 +4,12 @@
 
 本地优先的 DSH 皮肤工作室，用于创建、审计、预览、持久化、导入和导出 `--dsw-alias-*` 明暗语义主题。
 
+## 界面截图
+
+![Skin Studio Token 编辑器与预览](https://raw.githubusercontent.com/LeemanCheung/dsh-skin-studio/main/assets/screenshots/overview.png)
+
+> 使用 GPT Image 根据已实现的 Client 布局和功能生成；实际外观会随 DSH 主题和视口变化。
+
 ## 功能
 
 - Settings → **皮肤工坊** 提供响应式皮肤库、语义 token 编辑器和明暗双预览，包含 6 套预设、锁定、撤销/重做、删除确认和手动颜色控制。
