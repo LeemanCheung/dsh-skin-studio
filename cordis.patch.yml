@@ -1,0 +1,4 @@
+# Durable Host library; the package's dsh.client manifest contributes Skin Studio.
+- insert:
+    - id: skin-studio
+      name: dsh-skin-studio
