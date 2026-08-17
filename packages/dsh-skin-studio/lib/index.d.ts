@@ -96,7 +96,7 @@ declare class SkinStudioRemote extends TypertRemoteService {
   list(): Promise<SkinSummary[]>;
   get(id: string): Promise<Skin | null>;
   save(input: Skin): Promise<Skin>;
-  remove(id: string): Promise<boolean>;
+  deleteSkin(id: string): Promise<boolean>;
   active(): Promise<ActiveState>;
   activate(id: string | null): Promise<ActiveState>;
   import(text: string): Promise<Skin>;

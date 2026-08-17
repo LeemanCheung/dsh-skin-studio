@@ -9,14 +9,14 @@ import type { ActiveState, Skin, SkinSummary } from '../schema.js'
 import skinStudioRemote from 'dsh-skin-studio/remote'
 
 type RemoteResult<T> = { ok: true; value: T } | { ok: false; error: { message: string } }
-type RawApi = { list():Promise<RemoteResult<SkinSummary[]>>; get(id:string):Promise<RemoteResult<Skin|null>>; save(s:Skin):Promise<RemoteResult<Skin>>; remove(id:string):Promise<RemoteResult<boolean>>; active():Promise<RemoteResult<ActiveState>>; activate(id:string|null):Promise<RemoteResult<ActiveState>>; import(text:string):Promise<RemoteResult<Skin>>; export(id:string):Promise<RemoteResult<string>>; pluginSource(id:string):Promise<RemoteResult<string>> }
+type RawApi = { list():Promise<RemoteResult<SkinSummary[]>>; get(id:string):Promise<RemoteResult<Skin|null>>; save(s:Skin):Promise<RemoteResult<Skin>>; deleteSkin(id:string):Promise<RemoteResult<boolean>>; active():Promise<RemoteResult<ActiveState>>; activate(id:string|null):Promise<RemoteResult<ActiveState>>; import(text:string):Promise<RemoteResult<Skin>>; export(id:string):Promise<RemoteResult<string>>; pluginSource(id:string):Promise<RemoteResult<string>> }
 type Api = { list():Promise<SkinSummary[]>; get(id:string):Promise<Skin|null>; save(s:Skin):Promise<Skin>; remove(id:string):Promise<boolean>; active():Promise<ActiveState>; activate(id:string|null):Promise<ActiveState>; import(text:string):Promise<Skin>; export(id:string):Promise<string>; pluginSource(id:string):Promise<string> }
 type PreviewStyle = React.CSSProperties & Record<'--preview-bg'|'--preview-layer'|'--preview-label'|'--preview-secondary'|'--preview-accent'|'--preview-on-accent'|'--preview-border', string>
 
 const unwrap=async<T,>(pending:Promise<RemoteResult<T>>):Promise<T>=>{const result=await pending;if(!result.ok)throw new Error(result.error.message);return result.value}
 const apiFrom=(remote:RawApi,onActivate:(id:string|null)=>Promise<void>):Api=>({
   list:()=>unwrap(remote.list()), get:id=>unwrap(remote.get(id)), save:skin=>unwrap(remote.save(skin)),
-  remove:async id=>{const removed=await unwrap(remote.remove(id));if(removed){const state=await unwrap(remote.active());await onActivate(state.activeId)}return removed},
+  remove:async id=>{const removed=await unwrap(remote.deleteSkin(id));if(removed){const state=await unwrap(remote.active());await onActivate(state.activeId)}return removed},
   active:()=>unwrap(remote.active()), activate:async id=>{const state=await unwrap(remote.activate(id));await onActivate(id);return state},
   import:text=>unwrap(remote.import(text)), export:id=>unwrap(remote.export(id)), pluginSource:id=>unwrap(remote.pluginSource(id)),
 })
@@ -105,7 +105,8 @@ export const name='dsh-skin-studio-client'
 export const inject=['remote','slots','theme']
 export async function apply(ctx:ClientContext):Promise<()=>Promise<void>>{
   const disposeRemote=await ctx.remote.$mount(skinStudioRemote)
-  const remote=(ctx.remote as unknown as {skinStudio:RawApi}).skinStudio
+  const remote=ctx.get('remote.skinStudio') as RawApi|undefined
+  if(remote===undefined){await disposeRemote();throw new Error('Skin Studio Remote namespace did not mount')}
   let disposeTheme=()=>{}
   const applyTheme=async(id:string|null):Promise<void>=>{disposeTheme();disposeTheme=()=>{};if(id===null)return;const skin=await unwrap(remote.get(id));if(skin)disposeTheme=ctx.theme.overrideTokens('dsh-skin-studio',skin.tokens)}
   const api=apiFrom(remote,applyTheme)

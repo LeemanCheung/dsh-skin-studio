@@ -164,7 +164,7 @@ let SkinStudioRemote = (() => {
 	let _list_decorators;
 	let _get_decorators;
 	let _save_decorators;
-	let _remove_decorators;
+	let _deleteSkin_decorators;
 	let _active_decorators;
 	let _activate_decorators;
 	let _import_decorators;
@@ -176,7 +176,7 @@ let SkinStudioRemote = (() => {
 			_list_decorators = [Remote];
 			_get_decorators = [Remote];
 			_save_decorators = [Remote];
-			_remove_decorators = [Remote];
+			_deleteSkin_decorators = [Remote];
 			_active_decorators = [Remote];
 			_activate_decorators = [Remote];
 			_import_decorators = [Remote];
@@ -215,14 +215,14 @@ let SkinStudioRemote = (() => {
 				},
 				metadata: _metadata
 			}, null, _instanceExtraInitializers);
-			__esDecorate(this, null, _remove_decorators, {
+			__esDecorate(this, null, _deleteSkin_decorators, {
 				kind: "method",
-				name: "remove",
+				name: "deleteSkin",
 				static: false,
 				private: false,
 				access: {
-					has: (obj) => "remove" in obj,
-					get: (obj) => obj.remove
+					has: (obj) => "deleteSkin" in obj,
+					get: (obj) => obj.deleteSkin
 				},
 				metadata: _metadata
 			}, null, _instanceExtraInitializers);
@@ -316,7 +316,7 @@ let SkinStudioRemote = (() => {
 			await this.domain.table("skins").put(skin.id, { skin });
 			return skin;
 		}
-		async remove(id) {
+		async deleteSkin(id) {
 			const key = safeId(id);
 			const active = this.domain.global.get();
 			if (active.activeId === key) await this.domain.global.set({

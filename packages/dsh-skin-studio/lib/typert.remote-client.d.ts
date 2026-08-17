@@ -9,23 +9,23 @@ declare module '@deepseek-ai/dsh-typert-protocol' {
   interface TypertRemoteNamespace$736b696e53747564696f {
     activate: (id: string | null) => Promise<RemoteResult<ActiveState>>
     active: () => Promise<RemoteResult<ActiveState>>
+    deleteSkin: (id: string) => Promise<RemoteResult<boolean>>
     export: (id: string) => Promise<RemoteResult<string>>
     get: (id: string) => Promise<RemoteResult<Skin | null>>
     import: (text: string) => Promise<RemoteResult<Skin>>
     list: () => Promise<RemoteResult<SkinSummary[]>>
     pluginSource: (id: string) => Promise<RemoteResult<string>>
-    remove: (id: string) => Promise<RemoteResult<boolean>>
     save: (input: Skin) => Promise<RemoteResult<Skin>>
   }
   interface TypertRemoteMap {
     'skinStudio/activate': (id: string | null) => Promise<RemoteResult<ActiveState>>
     'skinStudio/active': () => Promise<RemoteResult<ActiveState>>
+    'skinStudio/deleteSkin': (id: string) => Promise<RemoteResult<boolean>>
     'skinStudio/export': (id: string) => Promise<RemoteResult<string>>
     'skinStudio/get': (id: string) => Promise<RemoteResult<Skin | null>>
     'skinStudio/import': (text: string) => Promise<RemoteResult<Skin>>
     'skinStudio/list': () => Promise<RemoteResult<SkinSummary[]>>
     'skinStudio/pluginSource': (id: string) => Promise<RemoteResult<string>>
-    'skinStudio/remove': (id: string) => Promise<RemoteResult<boolean>>
     'skinStudio/save': (input: Skin) => Promise<RemoteResult<Skin>>
   }
   interface TypertRemoteNamespaceMap {

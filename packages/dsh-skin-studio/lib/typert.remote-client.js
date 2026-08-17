@@ -10,6 +10,8 @@ const dsh_skin_studio_skinStudio_active_result$schema = z.object({
   'activeId': z.union([z.literal(null), z.string()]),
   'revision': z.number(),
 })
+const dsh_skin_studio_skinStudio_deleteSkin_parameter_0$schema = z.string()
+const dsh_skin_studio_skinStudio_deleteSkin_result$schema = z.boolean()
 const dsh_skin_studio_skinStudio_export_parameter_0$schema = z.string()
 const dsh_skin_studio_skinStudio_export_result$schema = z.string()
 const dsh_skin_studio_skinStudio_get_parameter_0$schema = z.string()
@@ -51,8 +53,6 @@ const dsh_skin_studio_skinStudio_list_result$schema = z.array(z.object({
 }))
 const dsh_skin_studio_skinStudio_pluginSource_parameter_0$schema = z.string()
 const dsh_skin_studio_skinStudio_pluginSource_result$schema = z.string()
-const dsh_skin_studio_skinStudio_remove_parameter_0$schema = z.string()
-const dsh_skin_studio_skinStudio_remove_result$schema = z.boolean()
 const dsh_skin_studio_skinStudio_save_parameter_0$schema = z.object({
   'format': z.literal("dshskin/v1"),
   'id': z.string(),
@@ -124,6 +124,31 @@ export const TYPERT_REMOTE = {
         schema: dsh_skin_studio_skinStudio_active_result$schema,
       },
       sourceLocation: {"file":"packages/dsh-skin-studio/src/typert.host.ts","line":18,"column":17},
+    },
+    {
+      id: 'dsh-skin-studio#skinStudio/deleteSkin',
+      service: 'skinStudio',
+      namespace: 'skinStudio',
+      method: 'deleteSkin',
+      invocation: { kind: 'direct' },
+      parameters: [
+        {
+          name: 'id',
+          wire: 'id',
+          source: 'json',
+          codec: {
+            mode: 'strict',
+            typeSymbol: 'dsh-skin-studio#skinStudio/deleteSkin:id',
+            schema: dsh_skin_studio_skinStudio_deleteSkin_parameter_0$schema,
+          },
+        },
+      ],
+      result: {
+        mode: 'strict',
+        typeSymbol: 'dsh-skin-studio#skinStudio/deleteSkin:result',
+        schema: dsh_skin_studio_skinStudio_deleteSkin_result$schema,
+      },
+      sourceLocation: {"file":"packages/dsh-skin-studio/src/typert.host.ts","line":17,"column":17},
     },
     {
       id: 'dsh-skin-studio#skinStudio/export',
@@ -239,31 +264,6 @@ export const TYPERT_REMOTE = {
         schema: dsh_skin_studio_skinStudio_pluginSource_result$schema,
       },
       sourceLocation: {"file":"packages/dsh-skin-studio/src/typert.host.ts","line":22,"column":17},
-    },
-    {
-      id: 'dsh-skin-studio#skinStudio/remove',
-      service: 'skinStudio',
-      namespace: 'skinStudio',
-      method: 'remove',
-      invocation: { kind: 'direct' },
-      parameters: [
-        {
-          name: 'id',
-          wire: 'id',
-          source: 'json',
-          codec: {
-            mode: 'strict',
-            typeSymbol: 'dsh-skin-studio#skinStudio/remove:id',
-            schema: dsh_skin_studio_skinStudio_remove_parameter_0$schema,
-          },
-        },
-      ],
-      result: {
-        mode: 'strict',
-        typeSymbol: 'dsh-skin-studio#skinStudio/remove:result',
-        schema: dsh_skin_studio_skinStudio_remove_result$schema,
-      },
-      sourceLocation: {"file":"packages/dsh-skin-studio/src/typert.host.ts","line":17,"column":17},
     },
     {
       id: 'dsh-skin-studio#skinStudio/save',

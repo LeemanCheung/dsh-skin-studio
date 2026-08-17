@@ -40,44 +40,44 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var studio_module_css_default = {
-			"hero": "_5zBPrW_hero",
 			"editor": "_5zBPrW_editor",
+			"empty": "_5zBPrW_empty",
+			"colorField": "_5zBPrW_colorField",
+			"ghost": "_5zBPrW_ghost",
+			"iconButton": "_5zBPrW_iconButton",
 			"eyebrow": "_5zBPrW_eyebrow",
+			"selected": "_5zBPrW_selected",
+			"upload": "_5zBPrW_upload",
+			"groupLabel": "_5zBPrW_groupLabel",
+			"error": "_5zBPrW_error",
+			"card": "_5zBPrW_card",
+			"library": "_5zBPrW_library",
+			"studio": "_5zBPrW_studio",
+			"sectionHeading": "_5zBPrW_sectionHeading",
 			"preview": "_5zBPrW_preview",
-			"fail": "_5zBPrW_fail",
-			"heroActions": "_5zBPrW_heroActions",
+			"lock": "_5zBPrW_lock",
+			"pass": "_5zBPrW_pass",
 			"primary": "_5zBPrW_primary",
-			"danger": "_5zBPrW_danger",
-			"tokenName": "_5zBPrW_tokenName",
 			"palette": "_5zBPrW_palette",
 			"skinItem": "_5zBPrW_skinItem",
 			"activeBadge": "_5zBPrW_activeBadge",
-			"actionStack": "_5zBPrW_actionStack",
-			"pass": "_5zBPrW_pass",
-			"card": "_5zBPrW_card",
-			"error": "_5zBPrW_error",
-			"upload": "_5zBPrW_upload",
-			"sectionHeading": "_5zBPrW_sectionHeading",
-			"skinList": "_5zBPrW_skinList",
-			"tokenTable": "_5zBPrW_tokenTable",
-			"empty": "_5zBPrW_empty",
-			"selected": "_5zBPrW_selected",
-			"lock": "_5zBPrW_lock",
-			"library": "_5zBPrW_library",
-			"iconButton": "_5zBPrW_iconButton",
-			"ghost": "_5zBPrW_ghost",
-			"preset": "_5zBPrW_preset",
-			"studio": "_5zBPrW_studio",
-			"notice": "_5zBPrW_notice",
-			"auditList": "_5zBPrW_auditList",
 			"divider": "_5zBPrW_divider",
-			"groupLabel": "_5zBPrW_groupLabel",
-			"cardHeader": "_5zBPrW_cardHeader",
-			"token": "_5zBPrW_token",
+			"tokenTable": "_5zBPrW_tokenTable",
+			"danger": "_5zBPrW_danger",
+			"fail": "_5zBPrW_fail",
 			"presetGrid": "_5zBPrW_presetGrid",
+			"notice": "_5zBPrW_notice",
+			"cardHeader": "_5zBPrW_cardHeader",
 			"badge": "_5zBPrW_badge",
-			"colorField": "_5zBPrW_colorField",
-			"inspector": "_5zBPrW_inspector"
+			"token": "_5zBPrW_token",
+			"actionStack": "_5zBPrW_actionStack",
+			"hero": "_5zBPrW_hero",
+			"auditList": "_5zBPrW_auditList",
+			"preset": "_5zBPrW_preset",
+			"tokenName": "_5zBPrW_tokenName",
+			"inspector": "_5zBPrW_inspector",
+			"heroActions": "_5zBPrW_heroActions",
+			"skinList": "_5zBPrW_skinList"
 		};
 		//#endregion
 		//#region src/colors.ts
@@ -4493,6 +4493,8 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 			"activeId": union([literal(null), string()]),
 			"revision": number()
 		});
+		const dsh_skin_studio_skinStudio_deleteSkin_parameter_0$schema = string();
+		const dsh_skin_studio_skinStudio_deleteSkin_result$schema = boolean();
 		const dsh_skin_studio_skinStudio_export_parameter_0$schema = string();
 		const dsh_skin_studio_skinStudio_export_result$schema = string();
 		const dsh_skin_studio_skinStudio_get_parameter_0$schema = string();
@@ -4549,8 +4551,6 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 		}));
 		const dsh_skin_studio_skinStudio_pluginSource_parameter_0$schema = string();
 		const dsh_skin_studio_skinStudio_pluginSource_result$schema = string();
-		const dsh_skin_studio_skinStudio_remove_parameter_0$schema = string();
-		const dsh_skin_studio_skinStudio_remove_result$schema = boolean();
 		const dsh_skin_studio_skinStudio_save_parameter_0$schema = object({
 			"format": literal("dshskin/v1"),
 			"id": string(),
@@ -4634,6 +4634,33 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 					sourceLocation: {
 						"file": "packages/dsh-skin-studio/src/typert.host.ts",
 						"line": 18,
+						"column": 17
+					}
+				},
+				{
+					id: "dsh-skin-studio#skinStudio/deleteSkin",
+					service: "skinStudio",
+					namespace: "skinStudio",
+					method: "deleteSkin",
+					invocation: { kind: "direct" },
+					parameters: [{
+						name: "id",
+						wire: "id",
+						source: "json",
+						codec: {
+							mode: "strict",
+							typeSymbol: "dsh-skin-studio#skinStudio/deleteSkin:id",
+							schema: dsh_skin_studio_skinStudio_deleteSkin_parameter_0$schema
+						}
+					}],
+					result: {
+						mode: "strict",
+						typeSymbol: "dsh-skin-studio#skinStudio/deleteSkin:result",
+						schema: dsh_skin_studio_skinStudio_deleteSkin_result$schema
+					},
+					sourceLocation: {
+						"file": "packages/dsh-skin-studio/src/typert.host.ts",
+						"line": 17,
 						"column": 17
 					}
 				},
@@ -4764,33 +4791,6 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 					}
 				},
 				{
-					id: "dsh-skin-studio#skinStudio/remove",
-					service: "skinStudio",
-					namespace: "skinStudio",
-					method: "remove",
-					invocation: { kind: "direct" },
-					parameters: [{
-						name: "id",
-						wire: "id",
-						source: "json",
-						codec: {
-							mode: "strict",
-							typeSymbol: "dsh-skin-studio#skinStudio/remove:id",
-							schema: dsh_skin_studio_skinStudio_remove_parameter_0$schema
-						}
-					}],
-					result: {
-						mode: "strict",
-						typeSymbol: "dsh-skin-studio#skinStudio/remove:result",
-						schema: dsh_skin_studio_skinStudio_remove_result$schema
-					},
-					sourceLocation: {
-						"file": "packages/dsh-skin-studio/src/typert.host.ts",
-						"line": 17,
-						"column": 17
-					}
-				},
-				{
 					id: "dsh-skin-studio#skinStudio/save",
 					service: "skinStudio",
 					namespace: "skinStudio",
@@ -4831,7 +4831,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 			get: (id) => unwrap(remote.get(id)),
 			save: (skin) => unwrap(remote.save(skin)),
 			remove: async (id) => {
-				const removed = await unwrap(remote.remove(id));
+				const removed = await unwrap(remote.deleteSkin(id));
 				if (removed) await onActivate((await unwrap(remote.active())).activeId);
 				return removed;
 			},
@@ -5431,7 +5431,11 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 		];
 		async function apply(ctx) {
 			const disposeRemote = await ctx.remote.$mount(TYPERT_REMOTE);
-			const remote = ctx.remote.skinStudio;
+			const remote = ctx.get("remote.skinStudio");
+			if (remote === void 0) {
+				await disposeRemote();
+				throw new Error("Skin Studio Remote namespace did not mount");
+			}
 			let disposeTheme = () => {};
 			const applyTheme = async (id) => {
 				disposeTheme();
