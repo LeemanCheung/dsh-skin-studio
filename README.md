@@ -5,6 +5,7 @@ English | [中文](README.zh-CN.md)
 A local-first DSH Skin Studio for creating, auditing, previewing, persisting, importing, and exporting semantic `--dsw-alias-*` light/dark themes.
 
 Compatible with DeepSeek Harness `0.1.2-rc.1`; its Client bundle uses the current Cordis context, UI renderer, Settings, Theme, and Remote contracts.
+The verified Windows interface results are recorded in [Windows DSH 0.1.2 acceptance](docs/WINDOWS_DSH_0.1.2_ACCEPTANCE.md).
 
 ## Screenshot
 

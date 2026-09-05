@@ -36,6 +36,7 @@
     "README.md",
     "README.zh-CN.md",
     "CHANGELOG.md",
+    "docs/WINDOWS_DSH_0.1.2_ACCEPTANCE.md",
     "LICENSE"
   ],
   "dsh": {
@@ -49,6 +50,15 @@
         "@deepseek-ai/dsh-client-ui-renderer",
         "@deepseek-ai/dsh-client-ui-settings",
         "@deepseek-ai/dsh-client-ui-theme"
+      ]
+    },
+    "compatibility": {
+      "dsh": ">=0.1.2-rc.1 <0.1.3-0",
+      "dshReleases": {
+        "0.1.2-rc.1": "compatible"
+      },
+      "profiles": [
+        "web"
       ]
     }
   },

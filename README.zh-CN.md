@@ -5,6 +5,7 @@
 本地优先的 DSH 皮肤工作室，用于创建、审计、预览、持久化、导入和导出 `--dsw-alias-*` 明暗语义主题。
 
 兼容 DeepSeek Harness `0.1.2-rc.1`；Client 包使用当前 Cordis Context、UI Renderer、Settings、Theme 与 Remote 合同。
+Windows 界面实测结果见 [Windows DSH 0.1.2 验收记录](docs/WINDOWS_DSH_0.1.2_ACCEPTANCE.md)。
 
 ## 界面截图
 
