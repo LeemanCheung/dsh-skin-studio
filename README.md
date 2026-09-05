@@ -4,6 +4,8 @@ English | [中文](README.zh-CN.md)
 
 A local-first DSH Skin Studio for creating, auditing, previewing, persisting, importing, and exporting semantic `--dsw-alias-*` light/dark themes.
 
+Compatible with DeepSeek Harness `0.1.2-rc.1`; its Client bundle uses the current Cordis context, UI renderer, Settings, Theme, and Remote contracts.
+
 ## Screenshot
 
 ![Skin Studio token editor and preview](https://raw.githubusercontent.com/LeemanCheung/dsh-skin-studio/main/assets/screenshots/overview.png)
@@ -14,7 +16,7 @@ A local-first DSH Skin Studio for creating, auditing, previewing, persisting, im
 
 - Settings → **Skin Studio** responsive library, semantic-token editor, and dual light/dark preview with six presets, locks, undo/redo, delete confirmation, and manual colour controls.
 - PNG/JPEG/WebP palette sampling bounded to 10 MB and 40 megapixels, with 128px downsampling and up to six selectable OKLab k-means swatches; automatic derivation always preserves locked tokens.
-- WCAG AA audit for body, secondary, and brand-button pairs, with correction of unlocked derived tokens.
+- WCAG AA audit for body, secondary, and brand-button pairs, with correction of unlocked derived tokens, including white text that must move darker.
 - Durable Host CRUD and active-skin state through `storageDomain` and generated Typert Remotes; Save & Apply persists the current draft before replacing the reversible override.
 - Strict `.dshskin` JSON export/import, Stop Preview, generated Client entry source with a declared theme dependency, and a local PNG share card.
 

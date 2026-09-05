@@ -4,6 +4,8 @@
 
 本地优先的 DSH 皮肤工作室，用于创建、审计、预览、持久化、导入和导出 `--dsw-alias-*` 明暗语义主题。
 
+兼容 DeepSeek Harness `0.1.2-rc.1`；Client 包使用当前 Cordis Context、UI Renderer、Settings、Theme 与 Remote 合同。
+
 ## 界面截图
 
 ![Skin Studio Token 编辑器与预览](https://raw.githubusercontent.com/LeemanCheung/dsh-skin-studio/main/assets/screenshots/overview.png)
@@ -14,7 +16,7 @@
 
 - Settings → **皮肤工坊** 提供响应式皮肤库、语义 token 编辑器和明暗双预览，包含 6 套预设、锁定、撤销/重做、删除确认和手动颜色控制。
 - 从不超过 10 MB、4000 万像素的 PNG/JPEG/WebP 图片中，以 128px 降采样和 OKLab k-means 提取最多 6 个可选色块；自动派生始终保留锁定 token。
-- 检查正文、次要文本和品牌按钮的 WCAG AA 对比度，并自动修复未锁定的派生 token。
+- 检查正文、次要文本和品牌按钮的 WCAG AA 对比度，并自动修复未锁定的派生 token，包括必须从白色向深色调整的前景色。
 - 通过 `storageDomain` 和生成的 Typert Remote 持久保存皮肤和当前激活状态；“保存并应用”会先保存当前草稿，再替换可逆主题覆盖。
 - 支持严格 `.dshskin` JSON 导入/导出、停止预览、生成已声明 `theme` 依赖的 Client 入口源码和本地 PNG 分享卡。
 

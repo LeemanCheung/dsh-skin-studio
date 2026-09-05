@@ -12,5 +12,25 @@ export function oklabToOklch(ok: OKLab): OKLCH { const c=Math.hypot(ok.a,ok.b); 
 export function oklchToOklab(ok: OKLCH): OKLab { const h=ok.h*Math.PI/180; return {l:ok.l,a:ok.c*Math.cos(h),b:ok.c*Math.sin(h)} }
 export function relativeLuminance(hex: string): number { const {r,g,b}=hexToRgb(hex); return .2126*linear(r/255)+.7152*linear(g/255)+.0722*linear(b/255) }
 export function contrast(a: string,b: string): number { const values=[relativeLuminance(a),relativeLuminance(b)].sort((m,n)=>n-m); return (values[0]!+.05)/(values[1]!+.05) }
-export function ensureContrast(foreground: string, background: string, ratio=4.5): string { let lab=rgbToOklab(hexToRgb(foreground)); const bg=relativeLuminance(background); for(let i=0;i<100&&contrast(rgbToHex(oklabToRgb(lab)),background)<ratio;i++) lab.l=Math.max(0,Math.min(1,lab.l+(bg>.5 ? -.01 : .01))); return rgbToHex(oklabToRgb(lab)) }
+export function ensureContrast(foreground: string, background: string, ratio=4.5): string {
+  const initial=rgbToHex(hexToRgb(foreground))
+  if(contrast(initial,background)>=ratio)return initial
+
+  const black='#000000',white='#ffffff'
+  const target=contrast(black,background)>=contrast(white,background)?black:white
+  if(contrast(target,background)<ratio)return target
+
+  const start=rgbToOklab(hexToRgb(initial)),end=rgbToOklab(hexToRgb(target))
+  let failing=0,passing=1,result=target
+  for(let i=0;i<24;i++){
+    const amount=(failing+passing)/2
+    const candidate=rgbToHex(oklabToRgb({
+      l:start.l+(end.l-start.l)*amount,
+      a:start.a+(end.a-start.a)*amount,
+      b:start.b+(end.b-start.b)*amount,
+    }))
+    if(contrast(candidate,background)>=ratio){passing=amount;result=candidate}else failing=amount
+  }
+  return result
+}
 export function kMeans(colors: RGB[], count=6, rounds=12): RGB[] { if (!colors.length) return []; const points=colors.map(rgbToOklab); const size=Math.min(count,points.length); const centers: OKLab[]=Array.from({length:size},(_,i)=>points[Math.floor(i*points.length/size)]!); for(let n=0;n<rounds;n++){const bins=centers.map(()=>[] as OKLab[]); for(const p of points){let best=0,d=Infinity; centers.forEach((c,i)=>{const x=(p.l-c.l)**2+(p.a-c.a)**2+(p.b-c.b)**2;if(x<d){d=x;best=i}});bins[best]!.push(p)} bins.forEach((bin,i)=>{if(bin.length) centers[i]=bin.reduce((a,p)=>({l:a.l+p.l/bin.length,a:a.a+p.a/bin.length,b:a.b+p.b/bin.length}),{l:0,a:0,b:0})})} return centers.map(oklabToRgb) }

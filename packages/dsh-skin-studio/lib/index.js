@@ -425,10 +425,26 @@ function contrast(a, b) {
 	return (values[0] + .05) / (values[1] + .05);
 }
 function ensureContrast(foreground, background, ratio = 4.5) {
-	let lab = rgbToOklab(hexToRgb(foreground));
-	const bg = relativeLuminance(background);
-	for (let i = 0; i < 100 && contrast(rgbToHex(oklabToRgb(lab)), background) < ratio; i++) lab.l = Math.max(0, Math.min(1, lab.l + (bg > .5 ? -.01 : .01)));
-	return rgbToHex(oklabToRgb(lab));
+	const initial = rgbToHex(hexToRgb(foreground));
+	if (contrast(initial, background) >= ratio) return initial;
+	const black = "#000000", white = "#ffffff";
+	const target = contrast(black, background) >= contrast(white, background) ? black : white;
+	if (contrast(target, background) < ratio) return target;
+	const start = rgbToOklab(hexToRgb(initial)), end = rgbToOklab(hexToRgb(target));
+	let failing = 0, passing = 1, result = target;
+	for (let i = 0; i < 24; i++) {
+		const amount = (failing + passing) / 2;
+		const candidate = rgbToHex(oklabToRgb({
+			l: start.l + (end.l - start.l) * amount,
+			a: start.a + (end.a - start.a) * amount,
+			b: start.b + (end.b - start.b) * amount
+		}));
+		if (contrast(candidate, background) >= ratio) {
+			passing = amount;
+			result = candidate;
+		} else failing = amount;
+	}
+	return result;
 }
 function kMeans(colors, count = 6, rounds = 12) {
 	if (!colors.length) return [];

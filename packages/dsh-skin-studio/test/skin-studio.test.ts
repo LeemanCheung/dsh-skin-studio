@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { contrast, hexToRgb, oklabToRgb, rgbToHex, rgbToOklab } from '../src/colors.js'
-import { deriveTokens, preserveLocked } from '../src/derive.js'
+import { PRESETS, audit, deriveTokens, preserveLocked } from '../src/derive.js'
 import { parseSkin, parseSkinText } from '../src/schema.js'
 
 describe('Skin Studio data and colour behavior', () => {
@@ -13,6 +13,21 @@ describe('Skin Studio data and colour behavior', () => {
     expect(contrast(tokens['--dsw-alias-label-primary'].light, tokens['--dsw-alias-bg-base'].light)).toBeGreaterThanOrEqual(4.5)
     expect(contrast(tokens['--dsw-alias-label-primary'].dark, tokens['--dsw-alias-bg-base'].dark)).toBeGreaterThanOrEqual(4.5)
     expect(contrast(tokens['--dsw-alias-label-primary-foreground'].light, tokens['--dsw-alias-brand-primary'].light)).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it('repairs a white foreground when the nearest passing colour is darker', () => {
+    const repaired=deriveTokens('#1677ff')['--dsw-alias-label-primary-foreground'].light
+    expect(repaired).not.toBe('#ffffff')
+    expect(contrast(repaired,deriveTokens('#1677ff')['--dsw-alias-brand-primary'].light)).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it('keeps every built-in preset at WCAG AA contrast in both modes', () => {
+    for(const preset of PRESETS){
+      for(const result of audit(deriveTokens(preset.seed))){
+        expect(result.light,`${preset.id} ${result.foreground} light`).toBeGreaterThanOrEqual(4.5)
+        expect(result.dark,`${preset.id} ${result.foreground} dark`).toBeGreaterThanOrEqual(4.5)
+      }
+    }
   })
 
   it('preserves locked semantic tokens during automatic derivation', () => {
