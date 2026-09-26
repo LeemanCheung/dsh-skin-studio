@@ -47,4 +47,6 @@ The generated plugin source is text for explicit user export; Skin Studio never 
 
 From the repository root run `corepack pnpm typecheck`, `corepack pnpm test`, `corepack pnpm build`, and `corepack pnpm pack:check`.
 
+CI also compares the rebuilt `packages/dsh-skin-studio/lib` directory with `HEAD`, including staged changes, and rejects untracked build output even when ignored by Git. CSS module identities use package-relative paths, and source maps normalize line endings while retaining embedded source and any final newline. Include regenerated bundles with any source or build change.
+
 MIT. See [LICENSE](LICENSE).

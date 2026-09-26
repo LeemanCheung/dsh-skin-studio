@@ -47,4 +47,6 @@ dsh plugin --profile web add github:LeemanCheung/dsh-skin-studio
 
 在仓库根目录运行 `corepack pnpm typecheck`、`corepack pnpm test`、`corepack pnpm build` 和 `corepack pnpm pack:check`。
 
+CI 还会对比重建后的 `packages/dsh-skin-studio/lib` 与 `HEAD`，包含已暂存的改动，并拒绝未跟踪或被 Git 忽略的构建产物。CSS 模块标识使用包内相对路径，source map 保留源码和原有末尾换行，并统一为 LF。修改源码或构建逻辑时应一并提交重建后的 bundle。
+
 MIT，见 [LICENSE](LICENSE)。

@@ -20,4 +20,9 @@ jobs:
       - run: corepack pnpm typecheck
       - run: corepack pnpm test
       - run: corepack pnpm build
+      - name: Verify committed generated artifacts
+        shell: bash
+        run: |
+          git diff --exit-code HEAD -- packages/dsh-skin-studio/lib
+          test -z "$(git ls-files --others -- packages/dsh-skin-studio/lib)"
       - run: corepack pnpm pack:check
