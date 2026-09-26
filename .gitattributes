@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+# Generated dependency template literals may contain meaningful trailing spaces.
+packages/dsh-skin-studio/lib/client.js whitespace=-blank-at-eol

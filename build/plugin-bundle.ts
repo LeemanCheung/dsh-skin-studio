@@ -1,6 +1,6 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
-import { basename, dirname, resolve } from 'node:path'
+import { basename, dirname, relative, resolve } from 'node:path'
 import { transform } from 'lightningcss'
 import { defineConfig, type UserConfig } from 'tsdown'
 import { WorkspaceTypertGenerator } from '@deepseek-ai/dsh-typert-generator'
@@ -17,6 +17,23 @@ const platformModules = [
 
 const cssPrefix = '\0dsh-community-css:'
 const cssSuffix = '.mjs'
+
+export function normalizeSourceMap(value: string): string {
+  const map = JSON.parse(value) as {
+    sources?: string[]
+    sourcesContent?: Array<string | null>
+  }
+  if (map.sources) map.sources = map.sources.map(source => source.replaceAll('\\', '/'))
+  if (map.sourcesContent) map.sourcesContent = map.sourcesContent.map(source => source?.replace(/\r\n?/g, '\n') ?? null)
+  return JSON.stringify(map) + (/[\r\n]$/.test(value) ? '\n' : '')
+}
+
+function normalizeSourceMaps(output: string): void {
+  for (const file of readdirSync(output).filter(file => file.endsWith('.map'))) {
+    const path = resolve(output, file)
+    writeFileSync(path, normalizeSourceMap(readFileSync(path, 'utf8')))
+  }
+}
 
 function packageTypertPlugin() {
   const official = typertPlugin({ mode: 'package', faces: ['host'] })
@@ -60,12 +77,18 @@ export function hostBundle(): ReturnType<typeof defineConfig> {
     dts: true,
     sourcemap: true,
     clean: false,
-    plugins: [packageTypertPlugin()],
+    plugins: [packageTypertPlugin(), {
+      name: 'dsh-community-stable-source-maps',
+      closeBundle() {
+        normalizeSourceMaps(resolve(process.cwd(), 'lib'))
+      },
+    }],
   })
 }
 
 /** Build a DSH browser closure-factory with inlined CSS Modules and Remote descriptors. */
-export function clientBundle(packageName: string): ReturnType<typeof defineConfig> {
+export function clientBundle(packageName: string, packageRoot = process.cwd()): ReturnType<typeof defineConfig> {
+  const cssFiles = new Map<string, { filename: string; stableName: string }>()
   const config: UserConfig = {
     entry: { client: 'src/client/index.tsx' },
     outDir: 'lib',
@@ -87,20 +110,27 @@ export function clientBundle(packageName: string): ReturnType<typeof defineConfi
       name: 'dsh-community-css-modules-inline',
       resolveId(source: string, importer: string | undefined) {
         if (!source.endsWith('.module.css')) return null
-        return cssPrefix + resolve(importer === undefined ? '.' : dirname(importer), source) + cssSuffix
+        const filename = resolve(importer === undefined ? packageRoot : dirname(importer), source)
+        const stableName = relative(packageRoot, filename).replaceAll('\\', '/')
+        const id = cssPrefix + stableName + cssSuffix
+        cssFiles.set(id, { filename, stableName })
+        return id
       },
       async load(id: string) {
         if (!id.startsWith(cssPrefix)) return null
-        const filename = id.slice(cssPrefix.length, -cssSuffix.length)
+        const resolved = cssFiles.get(id)
+        if (resolved === undefined) throw new Error(`Unknown CSS module: ${id}`)
+        const { filename, stableName } = resolved
         this.addWatchFile(filename)
         const result = transform({
-          filename,
-          code: await readFile(filename),
+          filename: stableName,
+          code: Buffer.from((await readFile(filename, 'utf8')).replace(/\r\n?/g, '\n')),
           cssModules: { pattern: '[hash]_[local]' },
           minify: true,
         })
         const classes: Record<string, string> = {}
-        for (const [local, entry] of Object.entries(result.exports ?? {})) classes[local] = entry.name
+        const exports = Object.entries(result.exports ?? {}).sort(([left], [right]) => left.localeCompare(right))
+        for (const [local, entry] of exports) classes[local] = entry.name
         return [
           `const css=${JSON.stringify(result.code.toString())};`,
           `const tagId=${JSON.stringify(`${packageName}/${basename(filename)}`)};`,
@@ -123,6 +153,7 @@ export function clientBundle(packageName: string): ReturnType<typeof defineConfi
         ].join('\n'))
         rmSync(resolve(output, 'client.ts.map'), { force: true })
         rmSync(resolve(output, 'tsconfig.tsbuildinfo'), { force: true })
+        normalizeSourceMaps(output)
       },
     }],
     outputOptions: {
